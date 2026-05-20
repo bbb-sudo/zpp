@@ -1,0 +1,65 @@
+server:
+  servlet:
+    context-path: /repair
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/repairdb?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      # 初始化连接数
+      initial-size: 5
+      # 最小空闲连接数
+      min-idle: 5
+      # 最大活跃连接数
+      max-active: 20
+      # 获取连接的最大等待时间（单位：毫秒）
+      max-wait: 60000
+      # 检测连接是否有效的 SQL
+      validation-query: SELECT 1
+      # 申请连接时检测连接有效性（会降低性能，不建议开启）
+      test-on-borrow: false
+      # 空闲时检测连接有效性（推荐开启）
+      test-while-idle: true
+      # 归还连接时检测连接有效性（会降低性能，不建议开启）
+      test-on-return: false
+      # 连接池监控配置（可选）
+      filters: stat,wall,log4j2
+      stat-view-servlet:
+        enabled: true
+        login-username: admin
+        login-password: admin123
+        allow: 127.0.0.1
+
+  # SpringDoc OpenAPI 项目配置
+  springdoc:
+    swagger-ui:
+      path: /swagger-ui.html
+      tags-sorter: alpha
+      operations-sorter: alpha
+    api-docs:
+      path: /v3/api-docs
+    group-configs:
+      - group: 'default'
+        paths-to-match: '/**'
+        # 改成你自己的 controller 包路径
+        packages-to-scan: com.nbt.repair.controller
+
+  # Knife4j 增强配置（可选，不配置也能正常使用）
+  knife4j:
+    enable: true
+    setting:
+      language: zh_cn
+      swagger-model-name: 实体类列表
+
+mybatis-plus:
+  configuration:
+    # MyBatis 配置 开启驼峰命名自动映射
+    map-underscore-to-camel-case: true
+    # 配置 SQL 日志输出，控制台打印 SQL
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  # 为 MyBatis 引用的实体类自定义别名，直接写类名即可，不用全限定名
+  type-aliases-package: com.nbt.repair.entity
